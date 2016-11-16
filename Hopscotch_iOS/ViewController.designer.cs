@@ -16,22 +16,21 @@ namespace Hopscotch_iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton tileA { get; set; }
+        UIKit.UIScrollView TileScrollView { get; set; }
 
-        [Outlet]
+        [Action ("modeChanged:")]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton tileB { get; set; }
+        partial void modeChanged (UIKit.UISwitch sender);
+
+        [Action ("UIButton29_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void UIButton29_TouchUpInside (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
-            if (tileA != null) {
-                tileA.Dispose ();
-                tileA = null;
-            }
-
-            if (tileB != null) {
-                tileB.Dispose ();
-                tileB = null;
+            if (TileScrollView != null) {
+                TileScrollView.Dispose ();
+                TileScrollView = null;
             }
         }
     }

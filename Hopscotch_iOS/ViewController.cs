@@ -22,5 +22,16 @@ namespace Hopscotch_iOS
 			base.DidReceiveMemoryWarning();
 			// Release any cached data, images, etc that aren't in use.
 		}
+
+		partial void UIButton29_TouchUpInside(UIButton sender)
+		{
+			//Send tile config request
+			throw new NotImplementedException();
+		}
+
+		partial void modeChanged(UISwitch sender)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

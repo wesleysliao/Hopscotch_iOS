@@ -6,7 +6,11 @@ namespace Hopscotch_iOS
 	public class Tiles
 	{
 		private List<Tile> tileList;
-		private int[,] neighbors; 
+		private int[,] neighbors;
+		int width;
+		int height;
+		int x_offset;
+		int y_offset;
 		
 		public Tiles(int[,] net_map, int net_map_len)
 		{
@@ -56,7 +60,29 @@ namespace Hopscotch_iOS
 
 			tileList = new List<Tile>(net_map_len);
 
-			addTile(0, 1, 1);
+			addTile(0, 1, 1); //This is recursive and adds all the tiles
+
+			int smallest_x = 0;
+			int biggest_x = 0;
+			int smallest_y = 0;
+			int biggest_y = 0;
+
+			for (int i = 0; i < tileList.Count; i++)
+			{
+				if (tileList[i].x_pos < smallest_x)
+					smallest_x = tileList[i].x_pos;
+				if (tileList[i].x_pos > biggest_x)
+					biggest_x = tileList[i].x_pos;
+				if (tileList[i].y_pos < smallest_y)
+					smallest_x = tileList[i].y_pos;
+				if (tileList[i].y_pos > biggest_y)
+					biggest_y = tileList[i].y_pos;
+			}
+
+			width = biggest_x - smallest_x;
+			height = biggest_y - smallest_y;
+			x_offset = smallest_x;
+			y_offset = smallest_y;
 		}
 
 

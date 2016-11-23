@@ -64,8 +64,8 @@ namespace Hopscotch_iOS
 
 			int smallest_x = 0;
 			int biggest_x = 0;
-			int smallest_y = 0;
-			int biggest_y = 0;
+			int smallest_y = 1;
+			int biggest_y = 1;
 
 			for (int i = 0; i < tileList.Count; i++)
 			{
@@ -74,13 +74,14 @@ namespace Hopscotch_iOS
 				if (tileList[i].x_pos > biggest_x)
 					biggest_x = tileList[i].x_pos;
 				if (tileList[i].y_pos < smallest_y)
-					smallest_x = tileList[i].y_pos;
+					smallest_y = tileList[i].y_pos;
 				if (tileList[i].y_pos > biggest_y)
 					biggest_y = tileList[i].y_pos;
 			}
 
-			width = biggest_x - smallest_x;
-			height = biggest_y - smallest_y;
+			width = biggest_x - smallest_x +1;
+			height = biggest_y - smallest_y +1;
+			
 			x_offset = smallest_x;
 			y_offset = smallest_y;
 		}

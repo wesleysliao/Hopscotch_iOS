@@ -14,10 +14,6 @@ namespace Hopscotch_iOS
     [Register ("ViewController")]
     partial class ViewController
     {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIScrollView TileScrollView { get; set; }
-
         [Action ("modeChanged:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void modeChanged (UIKit.UISwitch sender);
@@ -28,10 +24,6 @@ namespace Hopscotch_iOS
 
         void ReleaseDesignerOutlets ()
         {
-            if (TileScrollView != null) {
-                TileScrollView.Dispose ();
-                TileScrollView = null;
-            }
         }
     }
 }

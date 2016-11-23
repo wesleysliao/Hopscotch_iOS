@@ -5,12 +5,12 @@ namespace Hopscotch_iOS
 {
 	public class Tiles
 	{
-		private List<Tile> tileList;
+		public List<Tile> tileList;
 		private int[,] neighbors;
-		int width;
-		int height;
-		int x_offset;
-		int y_offset;
+		public int width;
+		public int height;
+		public int x_offset;
+		public int y_offset;
 		
 		public Tiles(int[,] net_map, int net_map_len)
 		{
@@ -125,6 +125,11 @@ namespace Hopscotch_iOS
 			{
 				addTile(x_pos-1, y_pos, neighbors[ID,3]);
 			}
+		}
+
+		public int Count()
+		{
+			return tileList.Count;
 		}
 	}
 }

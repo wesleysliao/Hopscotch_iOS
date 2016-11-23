@@ -13,7 +13,7 @@ namespace Hopscotch_iOS
 		public int x_pos;
 		public int y_pos;
 		public int ID;
-		bool lit;
+		public bool lit;
 
 	}
 }

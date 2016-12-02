@@ -18,6 +18,7 @@ namespace Hopscotch_iOS
 		int tileMap_x_offset;
 		int tileMap_y_offset;
 
+		bool AutoMode;
 
 		protected ViewController(IntPtr handle) : base(handle)
 		{
@@ -33,12 +34,14 @@ namespace Hopscotch_iOS
 			myDel = new MySimpleCBCentralManagerDelegate();
 			var myMgr = new CBCentralManager(myDel, DispatchQueue.CurrentQueue);
 
+			AutoMode = true;
+
 			tileList = new List<Tile>();
 
 			ParseTileMap(new int[,]
 			{
 				{1, 2, 3, 255, 0, 3, 0, 1, 2},
-				{2, 4, 1, 255, 255, 0, 1, 2, 3},
+				{2, 4, 1, 255, 6, 0, 1, 2, 3},
 				{4, 3, 2, 255, 5, 1, 2, 3, 0},
 				{3, 1, 4, 255, 255, 2, 3, 0, 1},
 				{5, 4, 255, 255, 255, 2, 3, 0, 1},
@@ -53,30 +56,10 @@ namespace Hopscotch_iOS
 				{14, 255, 255, 255, 255, 0, 1, 2, 3},
 				{15, 255, 255, 255, 255, 0, 1, 2, 3},
 				{16, 255, 255, 255, 255, 0, 1, 2, 3}
-			},5);
+			},7);
 
+			AddTilesToView();
 
-			for (int i = 0; i < tileList.Count; i++)
-			{
-				int padding = (int)(View.Frame.Width / 10);
-				int tilesize;
-				if ((float)tileMapWidth > (float)(tileMapHeight / 2))
-				{
-					tilesize = (int)((View.Frame.Width - (2 * padding)) / tileMapWidth);
-				}
-				else
-				{
-					tilesize = (int)((View.Frame.Height - (2 * padding)) / tileMapHeight);
-				}
-				var frame = new CoreGraphics.CGRect(View.Frame.Left + padding + (-tileMap_x_offset * tilesize) + (tileList[i].x_pos * tilesize), View.Frame.Bottom - padding + (tileList[i].y_pos * -tilesize), tilesize, tilesize);
-
-				tileList[i].Frame = frame;
-
-				tileList[i].SetTitle(tileList[i].ID.ToString(), UIControlState.Normal);
-				tileList[i].BackgroundColor = UIColor.FromRGB(0, 50, 100 + ((tileList[i].ID % 3) * 60));
-				tileList[i].TouchUpInside += (sender, e) => SendSelectedCommandToTile((Hopscotch_iOS.Tile)sender, e);
-				View.Add(tileList[i]);
-			}
 
 		}
 
@@ -156,8 +139,33 @@ namespace Hopscotch_iOS
 			tileMap_y_offset = smallest_y;
 		}
 
+		void AddTilesToView()
+		{
+			for (int i = 0; i < tileList.Count; i++)
+			{
+				var padding = (int)(View.Frame.Width / 10);
+				int tilesize;
+				if ((float)tileMapWidth > (float)(tileMapHeight / 2))
+				{
+					tilesize = (int)((View.Frame.Width - (2 * padding)) / tileMapWidth);
+				}
+				else
+				{
+					tilesize = (int)((View.Frame.Height - (2 * padding)) / tileMapHeight);
+				}
+				var frame = new CoreGraphics.CGRect(View.Frame.Left + padding + (-tileMap_x_offset * tilesize) + (tileList[i].x_pos * tilesize), View.Frame.Bottom - padding + (tileList[i].y_pos * -tilesize), tilesize, tilesize);
 
-		public bool tileWithIDExists(int ID)
+				tileList[i].Frame = frame;
+
+				tileList[i].SetTitle(tileList[i].ID.ToString(), UIControlState.Normal);
+				tileList[i].BackgroundColor = UIColor.FromRGB(0, 50, 100 + ((tileList[i].ID % 3) * 60));
+				tileList[i].TouchUpInside += (sender, e) => SendSelectedCommandToTile((Hopscotch_iOS.Tile)sender, e);
+				View.Add(tileList[i]);
+			}
+		}
+
+
+		private bool tileWithIDExists(int ID)
 		{
 			for (int i = 0; i < tileList.Count; i++)
 			{
@@ -216,8 +224,11 @@ namespace Hopscotch_iOS
 
 		public void SendSelectedCommandToTile(Tile sender, EventArgs e)
 		{
-			sender.lit = !sender.lit;
-			UpdateTileLitState();
+			if (!AutoMode)
+			{
+				sender.lit = !sender.lit;
+				UpdateTileLitState();
+			}
 		}
 
 		public override void DidReceiveMemoryWarning()
@@ -228,14 +239,32 @@ namespace Hopscotch_iOS
 
 		partial void UIButton29_TouchUpInside(UIButton sender)
 		{
-			//Send tile config request
-			throw new NotImplementedException();
+			tileList.Clear();
+			ParseTileMap(new int[,]
+			{
+				{1, 2, 3, 255, 0, 3, 0, 1, 2},
+				{2, 4, 1, 255, 255, 0, 1, 2, 3},
+				{4, 3, 2, 255, 5, 1, 2, 3, 0},
+				{3, 1, 4, 255, 255, 2, 3, 0, 1},
+				{5, 4, 255, 255, 255, 2, 3, 0, 1},
+				{6, 2, 255, 7, 255, 1, 2, 3, 0},
+				{7, 6, 255, 255, 255, 1, 2, 3, 0},
+				{8, 255, 255, 255, 255, 0, 1, 2, 3},
+				{9, 255, 255, 255, 255, 0, 1, 2, 3},
+				{10, 255, 255, 255, 255, 0, 1, 2, 3},
+				{11, 255, 255, 255, 255, 0, 1, 2, 3},
+				{12, 255, 255, 255, 255, 0, 1, 2, 3},
+				{13, 255, 255, 255, 255, 0, 1, 2, 3},
+				{14, 255, 255, 255, 255, 0, 1, 2, 3},
+				{15, 255, 255, 255, 255, 0, 1, 2, 3},
+				{16, 255, 255, 255, 255, 0, 1, 2, 3}
+			}, 5);
+			AddTilesToView();
 		}
 
 		partial void modeChanged(UISwitch sender)
 		{
-			//send tile mode change
-			throw new NotImplementedException();
+			AutoMode = sender.On;
 		}
 	}
 }

@@ -17,8 +17,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <subviews>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="3" translatesAutoresizingMaskIntoConstraints="NO">
-                                <rect key="frame" x="157" y="61" width="51" height="31"/>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="3" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="332" y="32" width="51" height="31"/>
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                     <rect key="frame" x="199" y="529" width="51" height="31"/>
                                 </variation>
@@ -26,8 +26,8 @@
                                     <action selector="modeChanged:" destination="BYZ-38-t0r" id="81" eventType="valueChanged"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4" translatesAutoresizingMaskIntoConstraints="NO">
-                                <rect key="frame" x="216" y="71" width="42" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="405" y="37" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -35,8 +35,8 @@
                                     <rect key="frame" x="258" y="539" width="42" height="21"/>
                                 </variation>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manual" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5" translatesAutoresizingMaskIntoConstraints="NO">
-                                <rect key="frame" x="86" y="71" width="63" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manual" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="252" y="37" width="63" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -44,8 +44,8 @@
                                     <rect key="frame" x="128" y="539" width="63" height="21"/>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="29" translatesAutoresizingMaskIntoConstraints="NO">
-                                <rect key="frame" x="0.0" y="43" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="29" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="20" y="29" width="84" height="37"/>
                                 <color key="backgroundColor" colorSpace="calibratedRGB" red="0.39215686274509803" green="0.5607843137254902" blue="0.996078431372549" alpha="1"/>
                                 <state key="normal" title="Update">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -96,6 +96,15 @@
                             <constraint id="65" firstItem="3" firstAttribute="leading" secondItem="5" secondAttribute="trailing" constant="8"/>
                             <constraint id="68" firstItem="8bC-Xf-vdC" firstAttribute="bottom" secondItem="4" secondAttribute="bottom" constant="8"/>
                             <constraint id="69" firstItem="5" firstAttribute="leading" secondItem="29" secondAttribute="trailing" constant="32"/>
+                            <constraint id="85" firstItem="3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="12"/>
+                            <constraint id="86" firstItem="3" firstAttribute="leading" secondItem="5" secondAttribute="trailing" constant="17"/>
+                            <constraint id="87" firstItem="4" firstAttribute="leading" secondItem="3" secondAttribute="trailing" constant="22"/>
+                            <constraint id="89" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="4" secondAttribute="trailing" constant="20"/>
+                            <constraint id="90" firstItem="29" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20"/>
+                            <constraint id="91" firstItem="29" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="9"/>
+                            <constraint id="92" firstItem="4" firstAttribute="centerY" secondItem="3" secondAttribute="centerY"/>
+                            <constraint id="93" firstItem="5" firstAttribute="centerY" secondItem="3" secondAttribute="centerY"/>
+                            <constraint id="94" firstItem="29" firstAttribute="centerY" secondItem="3" secondAttribute="centerY"/>
                         </constraints>
                     </view>
                     <connections/>

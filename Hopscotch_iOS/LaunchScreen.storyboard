@@ -26,7 +26,7 @@
                             </imageView>
                         </subviews>
                         <constraints>
-                            <constraint id="15" firstItem="Ze5-6b-2t3" firstAttribute="centerX" secondItem="7" secondAttribute="centerX" constant="52"/>
+                            <constraint id="15" firstItem="Ze5-6b-2t3" firstAttribute="centerX" secondItem="7" secondAttribute="centerX" constant="1"/>
                             <constraint id="16" firstItem="Ze5-6b-2t3" firstAttribute="centerY" secondItem="7" secondAttribute="centerY" constant="112"/>
                             <constraint id="19" firstItem="7" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width"/>
                         </constraints>

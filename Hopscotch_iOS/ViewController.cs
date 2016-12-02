@@ -151,7 +151,7 @@ namespace Hopscotch_iOS
 				}
 				else
 				{
-					tilesize = (int)((View.Frame.Height - (2 * padding)) / tileMapHeight);
+					tilesize = (int)((View.Frame.Height - (4 * padding)) / tileMapHeight);
 				}
 				var frame = new CoreGraphics.CGRect(View.Frame.Left + padding + (-tileMap_x_offset * tilesize) + (tileList[i].x_pos * tilesize), View.Frame.Bottom - padding + (tileList[i].y_pos * -tilesize), tilesize, tilesize);
 
@@ -239,6 +239,8 @@ namespace Hopscotch_iOS
 
 		partial void UIButton29_TouchUpInside(UIButton sender)
 		{
+			for (int i = 0; i < tileList.Count; i++)
+			tileList[i].RemoveFromSuperview();
 			tileList.Clear();
 			ParseTileMap(new int[,]
 			{
@@ -246,9 +248,9 @@ namespace Hopscotch_iOS
 				{2, 4, 1, 255, 255, 0, 1, 2, 3},
 				{4, 3, 2, 255, 5, 1, 2, 3, 0},
 				{3, 1, 4, 255, 255, 2, 3, 0, 1},
-				{5, 4, 255, 255, 255, 2, 3, 0, 1},
-				{6, 2, 255, 7, 255, 1, 2, 3, 0},
-				{7, 6, 255, 255, 255, 1, 2, 3, 0},
+				{5, 4, 255, 6, 255, 2, 3, 0, 1},
+				{6, 5, 255, 7, 255, 2, 3, 0, 1},
+				{7, 6, 255, 255, 255, 2, 3, 0, 1},
 				{8, 255, 255, 255, 255, 0, 1, 2, 3},
 				{9, 255, 255, 255, 255, 0, 1, 2, 3},
 				{10, 255, 255, 255, 255, 0, 1, 2, 3},
@@ -258,7 +260,7 @@ namespace Hopscotch_iOS
 				{14, 255, 255, 255, 255, 0, 1, 2, 3},
 				{15, 255, 255, 255, 255, 0, 1, 2, 3},
 				{16, 255, 255, 255, 255, 0, 1, 2, 3}
-			}, 5);
+			}, 7);
 			AddTilesToView();
 		}
 

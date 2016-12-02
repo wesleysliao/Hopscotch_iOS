@@ -10,6 +10,7 @@ namespace Hopscotch_iOS
 	public partial class ViewController : UIViewController
 	{
 		MySimpleCBCentralManagerDelegate myDel;
+		CBCentralManager btMgr;
 
 		List<Tile> tileList;
 
@@ -32,7 +33,7 @@ namespace Hopscotch_iOS
 
 			//Important to retain reference, else will be GC'ed
 			myDel = new MySimpleCBCentralManagerDelegate();
-			var myMgr = new CBCentralManager(myDel, DispatchQueue.CurrentQueue);
+			btMgr = new CBCentralManager(myDel, DispatchQueue.CurrentQueue);
 
 			AutoMode = true;
 
@@ -227,6 +228,7 @@ namespace Hopscotch_iOS
 			if (!AutoMode)
 			{
 				sender.lit = !sender.lit;
+				System.Console.WriteLine(sender.ID.ToString());
 				UpdateTileLitState();
 			}
 		}

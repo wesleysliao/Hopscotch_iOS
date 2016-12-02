@@ -5,16 +5,16 @@ namespace CoreBluetooth
 {
 	public class MySimpleCBCentralManagerDelegate : CBCentralManagerDelegate
 	{
-		override public void UpdatedState(CBCentralManager mgr)
+		override public void UpdatedState(CBCentralManager central)
 		{
-			if (mgr.State == CBCentralManagerState.PoweredOn)
+			if (central.State == CBCentralManagerState.PoweredOn)
 			{
 				//Passing in null scans for all peripherals. Peripherals can be targeted by using CBUIIDs
 				CBUUID[] cbuuids = null;
-				mgr.ScanForPeripherals(cbuuids); //Initiates async calls of DiscoveredPeripheral
+				central.ScanForPeripherals(cbuuids); //Initiates async calls of DiscoveredPeripheral
 												 //Timeout after 30 seconds
 				var timer = new Timer(30 * 1000);
-				timer.Elapsed += (sender, e) => mgr.StopScan();
+				timer.Elapsed += (sender, e) => central.StopScan();
 			}
 			else {
 				//Invalid state -- Bluetooth powered down, unavailable, etc.

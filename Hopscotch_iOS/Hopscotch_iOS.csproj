@@ -113,7 +113,6 @@
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="bluetooth.cs" />
-    <Compile Include="tiles.cs" />
     <Compile Include="tile.cs" />
   </ItemGroup>
   <ItemGroup>

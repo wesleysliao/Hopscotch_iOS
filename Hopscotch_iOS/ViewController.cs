@@ -9,7 +9,7 @@ namespace Hopscotch_iOS
 {
 	public partial class ViewController : UIViewController
 	{
-		MySimpleCBCentralManagerDelegate myDel;
+		MySimpleCBCentralManagerDelegate btDelegate;
 		CBCentralManager btMgr;
 
 		List<Tile> tileList;
@@ -32,8 +32,9 @@ namespace Hopscotch_iOS
 			// Perform any additional setup after loading the view, typically from a nib.
 
 			//Important to retain reference, else will be GC'ed
-			myDel = new MySimpleCBCentralManagerDelegate();
-			btMgr = new CBCentralManager(myDel, DispatchQueue.CurrentQueue);
+			btDelegate = new MySimpleCBCentralManagerDelegate();
+			btMgr = new CBCentralManager(btDelegate, DispatchQueue.CurrentQueue);
+
 
 			AutoMode = true;
 
@@ -62,6 +63,11 @@ namespace Hopscotch_iOS
 			AddTilesToView();
 
 
+		}
+
+		internal void connectedToControllerBox()
+		{
+			throw new NotImplementedException();
 		}
 
 		int[,] neighbors;
@@ -227,6 +233,7 @@ namespace Hopscotch_iOS
 		{
 			if (!AutoMode)
 			{
+				btDelegate.sendLightTile(sender.ID);
 				sender.lit = !sender.lit;
 				System.Console.WriteLine(sender.ID.ToString());
 				UpdateTileLitState();

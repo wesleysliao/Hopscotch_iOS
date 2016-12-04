@@ -9,20 +9,32 @@ namespace CoreBluetooth
 	{
 		public CBPeripheral tileController;
 		public SimplePeripheralDelegate tileControllerDelegate;
+		Hopscotch_iOS.ViewController viewController;
+
+		public MySimpleCBCentralManagerDelegate(Hopscotch_iOS.ViewController view_controller) : base()
+		{
+			viewController = view_controller;
+		}
 
 		public override void ConnectedPeripheral(CBCentralManager central, CBPeripheral peripheral)
 		{
 			tileController = peripheral;
-			System.Console.WriteLine("Connected to " +tileController.Name);
+			System.Console.WriteLine("Connected to " + tileController.Name);
+
+			viewController.connectedToControllerBox();
 
 			if (tileController.Delegate == null)
 			{
-				tileControllerDelegate = new SimplePeripheralDelegate();
+				tileControllerDelegate = new SimplePeripheralDelegate(viewController, tileController);
 				tileController.Delegate = tileControllerDelegate;
 				//Begins asynchronous discovery of services
 				tileController.DiscoverServices();
 			}
+		}
 
+		public override void DisconnectedPeripheral(CBCentralManager central, CBPeripheral peripheral, Foundation.NSError error)
+		{
+			viewController.disconnectedFromControllerBox();
 		}
 
 		override public void UpdatedState(CBCentralManager central)
@@ -32,8 +44,8 @@ namespace CoreBluetooth
 				//Passing in null scans for all peripherals. Peripherals can be targeted by using CBUIIDs
 				CBUUID[] cbuuids = null;
 				central.ScanForPeripherals(cbuuids); //Initiates async calls of DiscoveredPeripheral
-												 //Timeout after 30 seconds
-				var timer = new Timer(10 * 1000);
+													 //Timeout after 30 seconds
+				var timer = new Timer(60 * 1000);
 				timer.Elapsed += (sender, e) => central.StopScan();
 			}
 			else {
@@ -44,7 +56,7 @@ namespace CoreBluetooth
 
 		public override void DiscoveredPeripheral(CBCentralManager central, CBPeripheral peripheral, Foundation.NSDictionary advertisementData, Foundation.NSNumber RSSI)
 		{
-			
+
 			Console.WriteLine("Discovered {0}, data {1}", peripheral.Name, advertisementData);
 
 			if (peripheral.Name == "Tv221u-4C701516")
@@ -67,15 +79,23 @@ namespace CoreBluetooth
 
 	public class SimplePeripheralDelegate : CBPeripheralDelegate
 	{
+		CBPeripheral tileController;
 		public CBCharacteristic dataReadCharacteristic;
 		public CBCharacteristic dataWriteCharacteristic;
-		
+		Hopscotch_iOS.ViewController viewController;
+
+		public SimplePeripheralDelegate(Hopscotch_iOS.ViewController view_controller, CBPeripheral tile_controller) : base()
+		{
+			viewController = view_controller;
+			tileController = tile_controller;
+		}
+
 		public override void DiscoveredService(CBPeripheral peripheral, Foundation.NSError error)
 		{
 			System.Console.WriteLine("Discovered a service");
 			foreach (var service in peripheral.Services)
 			{
-				if (service.UUID == CBUUID.FromString("FFE5"))
+				if (service.UUID == CBUUID.FromString("FFE5") || service.UUID == CBUUID.FromString("FFE0"))
 				{
 					System.Console.WriteLine(service.UUID.ToString());
 					peripheral.DiscoverCharacteristics(service);
@@ -98,19 +118,67 @@ namespace CoreBluetooth
 				if (c.UUID == CBUUID.FromString("FFE4"))
 				{
 					dataReadCharacteristic = c;
+					peripheral.SetNotifyValue(true, dataReadCharacteristic);
 				}
 			}
 
 		}
 
-		public override void UpdatedValue(CBPeripheral peripheral, CBDescriptor descriptor, Foundation.NSError error)
-		{
-			Console.WriteLine("Value of characteristic " + descriptor.Characteristic + " is " + descriptor.Value);
-		}
+		int mapCharsLeft;
+		byte[] allMapData;
+		int index;
 
 		public override void UpdatedCharacterteristicValue(CBPeripheral peripheral, CBCharacteristic characteristic, Foundation.NSError error)
 		{
-			Console.WriteLine("Value of characteristic " + characteristic.ToString() + " is " + characteristic.Value);
+			if (dataReadCharacteristic.Value != null && characteristic == dataReadCharacteristic)
+			{
+				System.Console.WriteLine(dataReadCharacteristic.Value.ToString());
+				var data = dataReadCharacteristic.Value.ToArray();
+
+				if ((int)data[0] == 20)
+				{
+					mapCharsLeft = (data[1] * 6) + 2;
+					allMapData = new byte[mapCharsLeft + 2];
+					allMapData.Initialize();
+					allMapData[1] = data[1];
+					index = 0;
+
+				}
+
+				if (mapCharsLeft > 0)
+				{
+					
+					data.CopyTo(allMapData, index);
+					index += data.Length;
+					mapCharsLeft -= data.Length;
+
+					if (mapCharsLeft == 0)
+					{
+						ParseNetMap(allMapData);
+					}
+				}
+				else
+				{
+					viewController.tileSteppedOn((int)dataReadCharacteristic.Value.ToArray()[0]);
+				}
+			}
+		}
+
+		void ParseNetMap(byte[] mapData)
+		{
+			var net_map = new int[mapData[1], 6];
+			net_map.Initialize();
+			int index = 2;
+			for (int line = 0; line < (int)mapData[1]; line++)
+			{
+				for (int item = 0; item < 6; item++)
+				{
+					net_map[line, item] = (int)mapData[index];
+					index++;
+				}
+			}
+
+			viewController.ParseTileMap(net_map, (int)mapData[1]);
 		}
 	}
 

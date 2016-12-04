@@ -14,16 +14,24 @@ namespace Hopscotch_iOS
     [Register ("ViewController")]
     partial class ViewController
     {
-        [Action ("modeChanged:")]
+        [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void modeChanged (UIKit.UISwitch sender);
+        UIKit.UIButton ConnectButton { get; set; }
 
-        [Action ("UIButton29_TouchUpInside:")]
+        [Action ("ConnectButton_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void UIButton29_TouchUpInside (UIKit.UIButton sender);
+        partial void ConnectButton_TouchUpInside (UIKit.UIButton sender);
+
+        [Action ("UIButton191_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void UIButton191_TouchUpInside (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
+            if (ConnectButton != null) {
+                ConnectButton.Dispose ();
+                ConnectButton = null;
+            }
         }
     }
 }

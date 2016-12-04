@@ -9,6 +9,7 @@ namespace Hopscotch_iOS
 {
 	public partial class ViewController : UIViewController
 	{
+
 		MySimpleCBCentralManagerDelegate btDelegate;
 		CBCentralManager btMgr;
 
@@ -19,7 +20,7 @@ namespace Hopscotch_iOS
 		int tileMap_x_offset;
 		int tileMap_y_offset;
 
-		bool AutoMode;
+		public bool AutoMode;
 
 		protected ViewController(IntPtr handle) : base(handle)
 		{
@@ -32,55 +33,41 @@ namespace Hopscotch_iOS
 			// Perform any additional setup after loading the view, typically from a nib.
 
 			//Important to retain reference, else will be GC'ed
-			btDelegate = new MySimpleCBCentralManagerDelegate();
+			btDelegate = new MySimpleCBCentralManagerDelegate(this);
 			btMgr = new CBCentralManager(btDelegate, DispatchQueue.CurrentQueue);
 
-
-			AutoMode = true;
+			AutoMode = false;
 
 			tileList = new List<Tile>();
-
-			ParseTileMap(new int[,]
-			{
-				{1, 2, 3, 255, 0, 3, 0, 1, 2},
-				{2, 4, 1, 255, 6, 0, 1, 2, 3},
-				{4, 3, 2, 255, 5, 1, 2, 3, 0},
-				{3, 1, 4, 255, 255, 2, 3, 0, 1},
-				{5, 4, 255, 255, 255, 2, 3, 0, 1},
-				{6, 2, 255, 7, 255, 1, 2, 3, 0},
-				{7, 6, 255, 255, 255, 1, 2, 3, 0},
-				{8, 255, 255, 255, 255, 0, 1, 2, 3},
-				{9, 255, 255, 255, 255, 0, 1, 2, 3},
-				{10, 255, 255, 255, 255, 0, 1, 2, 3},
-				{11, 255, 255, 255, 255, 0, 1, 2, 3},
-				{12, 255, 255, 255, 255, 0, 1, 2, 3},
-				{13, 255, 255, 255, 255, 0, 1, 2, 3},
-				{14, 255, 255, 255, 255, 0, 1, 2, 3},
-				{15, 255, 255, 255, 255, 0, 1, 2, 3},
-				{16, 255, 255, 255, 255, 0, 1, 2, 3}
-			},7);
-
-			AddTilesToView();
-
 
 		}
 
 		internal void connectedToControllerBox()
 		{
-			throw new NotImplementedException();
+			ConnectButton.SetTitle("Update Layout",UIControlState.Normal);
+			ConnectButton.BackgroundColor = UIColor.Green;
+
+		}
+
+		internal void disconnectedFromControllerBox()
+		{
+			ConnectButton.SetTitle("Not Connected", UIControlState.Normal);
+			ConnectButton.BackgroundColor = UIColor.Red;
+			RemoveTilesFromView();
+
 		}
 
 		int[,] neighbors;
 
-		private void ParseTileMap(int[,] net_map, int net_map_len)
+		public void ParseTileMap(int[,] net_map, int net_map_len)
 		{
-			
-
-			if ((net_map.GetLength(0) != 16) || (net_map.GetLength(1) != 9))
+			if ((net_map.GetLength(0) != net_map_len) || (net_map.GetLength(1) != 6))
 			{
 				// net map incorrect size.
 				throw new FormatException();
 			}
+
+			RemoveTilesFromView();
 
 			neighbors = new int[net_map_len + 1, 4];
 
@@ -144,10 +131,7 @@ namespace Hopscotch_iOS
 
 			tileMap_x_offset = smallest_x;
 			tileMap_y_offset = smallest_y;
-		}
 
-		void AddTilesToView()
-		{
 			for (int i = 0; i < tileList.Count; i++)
 			{
 				var padding = (int)(View.Frame.Width / 10);
@@ -158,9 +142,9 @@ namespace Hopscotch_iOS
 				}
 				else
 				{
-					tilesize = (int)((View.Frame.Height - (4 * padding)) / tileMapHeight);
+					tilesize = (int)((View.Frame.Height - (3 * padding)) / tileMapHeight);
 				}
-				var frame = new CoreGraphics.CGRect(View.Frame.Left + padding + (-tileMap_x_offset * tilesize) + (tileList[i].x_pos * tilesize), View.Frame.Bottom - padding + (tileList[i].y_pos * -tilesize), tilesize, tilesize);
+				var frame = new CoreGraphics.CGRect(View.Frame.Left + padding + (-tileMap_x_offset * tilesize) + (tileList[i].x_pos * tilesize), View.Frame.Bottom - padding + (tileList[i].y_pos * -tilesize) + (tilesize*tileMap_y_offset) - tilesize, tilesize, tilesize);
 
 				tileList[i].Frame = frame;
 
@@ -171,12 +155,18 @@ namespace Hopscotch_iOS
 			}
 		}
 
+		void RemoveTilesFromView()
+		{
+			foreach (Tile tile in tileList)
+				tile.RemoveFromSuperview();
+			tileList.Clear();
+		}
 
 		private bool tileWithIDExists(int ID)
 		{
-			for (int i = 0; i < tileList.Count; i++)
+			foreach (Tile tile in tileList)
 			{
-				if (tileList[i].ID == ID)
+				if (tile.ID == ID)
 				{
 					return true;
 				}
@@ -218,15 +208,12 @@ namespace Hopscotch_iOS
 			return tileList.Count;
 		}
 
-		public void UpdateTileLitState()
+		public void UpdateTileLitState(Tile tile)
 		{
-			for (int i = 0; i < tileList.Count; i++)
-			{
-				if (tileList[i].lit)
-					tileList[i].BackgroundColor = UIColor.White;
-				else
-					tileList[i].BackgroundColor = UIColor.FromRGB(0, 50, 100 + ((tileList[i].ID % 3) * 60));
-			}
+			if(tile.lit)
+				tile.BackgroundColor = UIColor.White;
+			else
+				tile.BackgroundColor = UIColor.FromRGB(0, 50, 100 + ((tile.ID % 3) * 60));
 		}
 
 		public void SendSelectedCommandToTile(Tile sender, EventArgs e)
@@ -234,9 +221,22 @@ namespace Hopscotch_iOS
 			if (!AutoMode)
 			{
 				btDelegate.sendLightTile(sender.ID);
-				sender.lit = !sender.lit;
+				//sender.lit = true;
 				System.Console.WriteLine(sender.ID.ToString());
-				UpdateTileLitState();
+				UpdateTileLitState(sender);
+			}
+		}
+
+		public void tileSteppedOn(int tileID)
+		{
+			foreach (Tile tile in tileList)
+			{
+				if (tileID == tile.ID)
+				{
+					tile.lit = false;
+					UpdateTileLitState(tile);
+					break;
+				}
 			}
 		}
 
@@ -246,36 +246,18 @@ namespace Hopscotch_iOS
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		partial void UIButton29_TouchUpInside(UIButton sender)
+		partial void ConnectButton_TouchUpInside(UIButton sender)
 		{
-			for (int i = 0; i < tileList.Count; i++)
-			tileList[i].RemoveFromSuperview();
-			tileList.Clear();
-			ParseTileMap(new int[,]
-			{
-				{1, 2, 3, 255, 0, 3, 0, 1, 2},
-				{2, 4, 1, 255, 255, 0, 1, 2, 3},
-				{4, 3, 2, 255, 5, 1, 2, 3, 0},
-				{3, 1, 4, 255, 255, 2, 3, 0, 1},
-				{5, 4, 255, 6, 255, 2, 3, 0, 1},
-				{6, 5, 255, 7, 255, 2, 3, 0, 1},
-				{7, 6, 255, 255, 255, 2, 3, 0, 1},
-				{8, 255, 255, 255, 255, 0, 1, 2, 3},
-				{9, 255, 255, 255, 255, 0, 1, 2, 3},
-				{10, 255, 255, 255, 255, 0, 1, 2, 3},
-				{11, 255, 255, 255, 255, 0, 1, 2, 3},
-				{12, 255, 255, 255, 255, 0, 1, 2, 3},
-				{13, 255, 255, 255, 255, 0, 1, 2, 3},
-				{14, 255, 255, 255, 255, 0, 1, 2, 3},
-				{15, 255, 255, 255, 255, 0, 1, 2, 3},
-				{16, 255, 255, 255, 255, 0, 1, 2, 3}
-			}, 7);
-			AddTilesToView();
+			btDelegate.sendLightTile(0);
+			System.Console.WriteLine("Sent request");
+			//btDelegate.tileControllerDelegate.read_data();
 		}
 
-		partial void modeChanged(UISwitch sender)
+
+		partial void UIButton191_TouchUpInside(UIButton sender)
 		{
-			AutoMode = sender.On;
+			throw new NotImplementedException();
 		}
+
 	}
 }

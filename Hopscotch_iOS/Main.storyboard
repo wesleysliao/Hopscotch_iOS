@@ -17,37 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" customColorSpace="calibratedWhite" colorSpace="calibratedRGB" red="0.99215686274509807" green="1" blue="0.47058823529411764" alpha="1"/>
                         <subviews>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="3" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
-                                <rect key="frame" x="332" y="32" width="51" height="31"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="199" y="529" width="51" height="31"/>
-                                </variation>
-                                <connections>
-                                    <action selector="modeChanged:" destination="BYZ-38-t0r" id="81" eventType="valueChanged"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
-                                <rect key="frame" x="405" y="37" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="258" y="539" width="42" height="21"/>
-                                </variation>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manual" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
-                                <rect key="frame" x="252" y="37" width="63" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="128" y="539" width="63" height="21"/>
-                                </variation>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="29" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
-                                <rect key="frame" x="20" y="29" width="84" height="37"/>
-                                <color key="backgroundColor" colorSpace="calibratedRGB" red="0.39215686274509803" green="0.5607843137254902" blue="0.996078431372549" alpha="1"/>
-                                <state key="normal" title="Update">
+                                <rect key="frame" x="20" y="29" width="111" height="37"/>
+                                <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="0" blue="0" alpha="1"/>
+                                <state key="normal" title="Not Connected">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
@@ -56,22 +29,27 @@
                                 </variation>
                                 <connections>
                                     <action selector="UIButton27_TouchUpInside:" destination="31" id="30" eventType="touchUpInside"/>
-                                    <action selector="UIButton29_TouchUpInside:" destination="BYZ-38-t0r" id="80" eventType="touchUpInside"/>
+                                    <action selector="ConnectButton_TouchUpInside:" destination="BYZ-38-t0r" id="190" eventType="touchUpInside"/>
                                 </connections>
                                 <variation key="widthClass=compact">
                                     <rect key="frame" x="41" y="408" width="46" height="30"/>
                                 </variation>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="191" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="416" y="32" width="142" height="30"/>
+                                <color key="backgroundColor" colorSpace="calibratedRGB" red="0.33725490196078434" green="0.5607843137254902" blue="0.996078431372549" alpha="1"/>
+                                <state key="normal" title="Exit Manual Mode">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="UIButton191_TouchUpInside:" destination="BYZ-38-t0r" id="208" eventType="touchUpInside"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="61"/>
-                                <exclude reference="62"/>
-                                <exclude reference="63"/>
-                                <exclude reference="64"/>
-                                <exclude reference="65"/>
-                                <exclude reference="68"/>
-                                <exclude reference="69"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -80,34 +58,22 @@
                             </mask>
                             <mask key="constraints">
                                 <include reference="61"/>
-                                <exclude reference="62"/>
-                                <exclude reference="63"/>
-                                <include reference="64"/>
-                                <include reference="65"/>
-                                <exclude reference="68"/>
-                                <include reference="69"/>
                             </mask>
                         </variation>
                         <constraints>
-                            <constraint id="61" firstItem="29" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="14"/>
-                            <constraint id="62" firstItem="8bC-Xf-vdC" firstAttribute="bottom" secondItem="5" secondAttribute="bottom" constant="8"/>
-                            <constraint id="63" firstItem="8bC-Xf-vdC" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" constant="8"/>
-                            <constraint id="64" firstItem="4" firstAttribute="leading" secondItem="3" secondAttribute="trailing" constant="8"/>
-                            <constraint id="65" firstItem="3" firstAttribute="leading" secondItem="5" secondAttribute="trailing" constant="8"/>
-                            <constraint id="68" firstItem="8bC-Xf-vdC" firstAttribute="bottom" secondItem="4" secondAttribute="bottom" constant="8"/>
-                            <constraint id="69" firstItem="5" firstAttribute="leading" secondItem="29" secondAttribute="trailing" constant="32"/>
-                            <constraint id="85" firstItem="3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="12"/>
-                            <constraint id="86" firstItem="3" firstAttribute="leading" secondItem="5" secondAttribute="trailing" constant="17"/>
-                            <constraint id="87" firstItem="4" firstAttribute="leading" secondItem="3" secondAttribute="trailing" constant="22"/>
-                            <constraint id="89" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="4" secondAttribute="trailing" constant="20"/>
+                            <constraint id="61" firstItem="29" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20"/>
                             <constraint id="90" firstItem="29" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20"/>
                             <constraint id="91" firstItem="29" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="9"/>
-                            <constraint id="92" firstItem="4" firstAttribute="centerY" secondItem="3" secondAttribute="centerY"/>
-                            <constraint id="93" firstItem="5" firstAttribute="centerY" secondItem="3" secondAttribute="centerY"/>
-                            <constraint id="94" firstItem="29" firstAttribute="centerY" secondItem="3" secondAttribute="centerY"/>
+                            <constraint id="192" firstItem="191" firstAttribute="height" secondItem="29" secondAttribute="height"/>
+                            <constraint id="193" firstItem="191" firstAttribute="leading" secondItem="29" secondAttribute="trailing" constant="20"/>
+                            <constraint id="195" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="191" secondAttribute="trailing" constant="20" symbolic="YES"/>
+                            <constraint id="204" firstItem="29" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="9"/>
+                            <constraint id="207" firstItem="191" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="9"/>
                         </constraints>
                     </view>
-                    <connections/>
+                    <connections>
+                        <outlet property="ConnectButton" destination="29" id="name-outlet-29"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
